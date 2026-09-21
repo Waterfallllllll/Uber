@@ -1,42 +1,95 @@
-const gulp = require('gulp');
-const browserSync = require('browser-sync');
-const sass = require('gulp-sass')(require('sass'));
+const gulp = require("gulp");
+const browserSync = require("browser-sync");
+const sass = require("gulp-sass")(require("sass"));
+const cleanCSS = require("gulp-clean-css");
+const autoprefixer = require("gulp-autoprefixer");
 const rename = require("gulp-rename");
-const autoprefixer = require('gulp-autoprefixer');
-const cleanCSS = require('gulp-clean-css');
-// Static server
-gulp.task('server', function () {
-    browserSync.init({
-        server: {
-            baseDir: "src"
-        }
-    });
+const htmlmin = require("gulp-htmlmin");
+
+gulp.task("server", function () {
+	browserSync({
+		server: {
+			baseDir: "dist",
+		},
+	});
+
+	gulp.watch("src/*.html").on("change", browserSync.reload);
 });
 
-gulp.task('styles', function () {
-    return gulp.src("src/sass/*.+(scss|sass)")
-        /* мне необходим gulp, который будет переходить адресу src и что - то делать с этим файлом.Внутри src мы прописываем путь к файлу который нас интересует.Дальше все файлы которые подподают под наши критерии должны компилироваться.Для этого /*.+(scss|sass). */
-        .pipe(sass({ outputStyle: 'compressed' }).on('error', sass.logError))
-        /* Я хочу взять этот файл и что-то с ним сделать. Он будет компилировать код sass по пути который мы указали в прошлом шаге */
-        /*  Ну и после того, как мы откампилировали код. Этот файл весит в невесомости можно сказать, нам необходимо отправить его в определенную папку */
-        .pipe(rename({
-            prefix: "",
-            suffix: ".min",
-        }))
-        .pipe(autoprefixer({
-            cascade: false
-        }))
-        .pipe(cleanCSS({ compatibility: 'ie8' }))
-        .pipe(gulp.dest("src/css")) /* Вот этот файл который у тебя получился положи по определенному адресу */
-        .pipe(browserSync.stream()); /* После сохранения я опять буду вызывать browserSync. То есть страница будет обновляться */
+gulp.task("styles", function () {
+	return gulp
+		.src("src/sass/**/*.+(scss|sass)")
+		.pipe(sass({ outputStyle: "compressed" }).on("error", sass.logError))
+		.pipe(rename({ suffix: ".min", prefix: "" }))
+		.pipe(autoprefixer())
+		.pipe(cleanCSS({ compatibility: "ie8" }))
+		.pipe(gulp.dest("dist/css"))
+		.pipe(browserSync.stream());
 });
 
-
-gulp.task('watch', function () { /* Следит за изменениями в html и вы стилистических файлах */
-    gulp.watch("src/sass/*.+(scss|sass)", gulp.parallel("styles")); /* Следи за вот такими вот файлами. При сохранении вызывается*/
-    gulp.watch("src/*.html").on("change", browserSync.reload);
+gulp.task("vendor-css", function () {
+	return gulp
+		.src("src/css/*.css")
+		.pipe(gulp.dest("dist/css"))
+		.pipe(browserSync.stream());
 });
 
-gulp.task('default', gulp.parallel('watch', 'server', 'styles'));
-/* Если мы даём default, то это задача которая вызвается по умолчанию. После вызова команды, я хочу выполнить сразу несколько задач(server и styles) */
+gulp.task("watch", function () {
+	gulp.watch("src/sass/**/*.+(scss|sass|css)", gulp.parallel("styles"));
+	gulp.watch("src/*.html").on("change", gulp.parallel("html"));
+	gulp.watch("src/js/**/*.js").on("change", gulp.parallel("scripts"));
+	gulp.watch("src/fonts/**/*").on("all", gulp.parallel("fonts"));
+	gulp.watch("src/icons/**/*").on("all", gulp.parallel("icons"));
+	gulp.watch("src/img/**/*").on("all", gulp.parallel("images"));
+	gulp.watch("src/css/*.css").on("all", gulp.parallel("vendor-css"));
+});
 
+gulp.task("html", function () {
+	return gulp
+		.src("src/*.html")
+		.pipe(htmlmin({ collapseWhitespace: true }))
+		.pipe(gulp.dest("dist/"));
+});
+
+gulp.task("scripts", function () {
+	return gulp
+		.src("src/js/**/*.js")
+		.pipe(gulp.dest("dist/js"))
+		.pipe(browserSync.stream());
+});
+
+gulp.task("fonts", function () {
+	return gulp
+		.src("src/fonts/**/*", { encoding: false })
+		.pipe(gulp.dest("dist/fonts"))
+		.pipe(browserSync.stream());
+});
+
+gulp.task("icons", function () {
+	return gulp
+		.src("src/icons/**/*", { encoding: false })
+		.pipe(gulp.dest("dist/icons"))
+		.pipe(browserSync.stream());
+});
+
+gulp.task("images", function () {
+	return gulp
+		.src("src/img/**/*", { encoding: false })
+		.pipe(gulp.dest("dist/img"))
+		.pipe(browserSync.stream());
+});
+
+gulp.task(
+	"default",
+	gulp.parallel(
+		"watch",
+		"server",
+		"styles",
+		"vendor-css",
+		"scripts",
+		"fonts",
+		"icons",
+		"html",
+		"images",
+	)
+);
