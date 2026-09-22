@@ -1,69 +1,68 @@
-# Uber Partners Landing Page
+# Лендинг Uber Partners
 
-A responsive marketing landing page for an **Uber partner in Moscow**. It is aimed at drivers who want to join the service with their own car or a company vehicle.
+Адаптивная маркетинговая посадочная страница для **партнёра Uber в Москве**. Рассчитана на водителей, которые хотят подключиться к сервису на своём автомобиле или на автомобиле компании.
 
-This is a front-end project. It is **not** an official Uber product.
+Это фронтенд-проект. Он **не** является официальным продуктом Uber.
 
-## What the page includes
+## Что есть на странице
 
-- Header with navigation, partner branding, and a call-back request
-- Promo block inviting drivers to apply
-- Eight reasons to work with the partner (cashless payments, commission, flexible hours, support, and more)
-- Uber mobile app highlights
-- Driver requirements (own car vs company car)
-- Cities / worldwide coverage section
-- Footer with contacts and store badges
-- Hamburger menu for smaller screens
+- Шапка с навигацией, брендом партнёра и заявкой на обратный звонок
+- Промо-блок с приглашением водителям оставить заявку
+- Восемь причин работать с партнёром (безналичная оплата, комиссия, свободный график, поддержка и другое)
+- Возможности мобильного приложения Uber
+- Требования к водителям (свой автомобиль и автомобиль компании)
+- Блок о городах и покрытии по миру
+- Подвал с контактами и значками магазинов приложений
+- Гамбургер-меню для небольших экранов
 
-Page copy is in **Russian**.
+Тексты на странице на **русском языке**.
 
-## Tech stack
+## Стек технологий
 
-| Area | Tools |
+| Область | Инструменты |
 | --- | --- |
-| Markup | HTML5 |
-| Layout | Bootstrap Grid & Reboot |
-| Styles | Sass, Autoprefixer, CleanCSS |
-| Scripts | vanilla JavaScript |
-| Icons / fonts | Font Awesome, Google Fonts (Roboto) |
-| Build | Gulp 4 |
-| Dev server | BrowserSync |
+| Вёрстка | HTML5 |
+| Сетка | Bootstrap Grid & Reboot |
+| Стили | Sass, Autoprefixer, CleanCSS |
+| Скрипты | чистый JavaScript |
+| Иконки / шрифты | Font Awesome, Google Fonts (Roboto) |
+| Сборка | Gulp 4 |
+| Локальный сервер | BrowserSync |
 
-## Project structure
+## Структура проекта
 
 ```
-src/                 source files
+src/                 исходники
   index.html
-  sass/              styles (variables, mixins, layout, media queries)
-  js/script.js       mobile menu toggle
-  css/               vendor CSS (Bootstrap)
-  icons/  img/       assets
-dist/                build output (served by BrowserSync)
-gulpfile.js          compile, minify, copy, watch, live reload
+  sass/              стили (переменные, миксины, вёрстка, медиазапросы)
+  js/script.js       переключение мобильного меню
+  css/               сторонний CSS (Bootstrap)
+  icons/  img/       изображения и иконки
+dist/                результат сборки (отдаёт BrowserSync)
+gulpfile.js          компиляция, минификация, копирование, watch, live reload
 ```
 
-Gulp compiles Sass to minified CSS, minifies HTML, and copies scripts, fonts, icons, and images into `dist/`.
+Gulp компилирует Sass в минифицированный CSS, минифицирует HTML и копирует скрипты, шрифты, иконки и изображения в `dist/`.
 
-## Getting started
+## Как запустить
 
-**Requirements:** Node.js and npm.
+**Нужно:** Node.js и npm.
 
 ```bash
 npm install
 npx gulp
 ```
 
-This starts the default Gulp task: build into `dist/`, watch `src/` for changes, and open a local BrowserSync server.
+Запускается задача Gulp по умолчанию: сборка в `dist/`, отслеживание изменений в `src/` и локальный сервер BrowserSync.
 
-Open the URL shown in the terminal (usually `http://localhost:3000`).
+Откройте адрес из терминала (обычно `http://localhost:3000`).
 
-## Scripts
+## Команды
 
-There is no `npm start` script. Use Gulp directly:
+Скрипта `npm start` нет. Используйте Gulp напрямую:
 
-| Command | Description |
+| Команда | Описание |
 | --- | --- |
-| `npx gulp` | Build, watch, and serve `dist/` |
-| `npx gulp styles` | Compile and minify Sass only |
-| `npx gulp html` | Minify HTML into `dist/` |
-
+| `npx gulp` | Сборка, watch и раздача `dist/` |
+| `npx gulp styles` | Только компиляция и минификация Sass |
+| `npx gulp html` | Минификация HTML в `dist/` |
